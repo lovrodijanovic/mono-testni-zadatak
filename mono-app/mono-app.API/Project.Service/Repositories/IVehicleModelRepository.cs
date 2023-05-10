@@ -1,6 +1,6 @@
-﻿using mono_app.API.Models.Domain;
+﻿using mono_app.API.Project.MVC.Models.Domain;
 
-namespace mono_app.API.Repositories
+namespace mono_app.API.Project.Service.Repositories
 {
     public interface IVehicleModelRepository
     {

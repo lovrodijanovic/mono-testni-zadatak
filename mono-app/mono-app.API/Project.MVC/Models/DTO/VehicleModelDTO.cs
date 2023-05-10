@@ -1,15 +1,12 @@
-﻿namespace mono_app.API.Models.Domain
+﻿namespace mono_app.API.Project.MVC.Models.DTO
 {
-    public class VehicleModel
+    public class VehicleModelDTO
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
         public string Abrv { get; set; }
         public Guid VehicleMakeId { get; set; }
 
-
-
-        // Navigation properties
-        public VehicleMake VehicleMake { get; set; }
+        public VehicleMakeDTO VehicleMake { get; set; }
     }
 }

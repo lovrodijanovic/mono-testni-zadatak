@@ -1,8 +1,8 @@
-using Autofac;
 using Microsoft.EntityFrameworkCore;
-using mono_app.API.Data;
-using mono_app.API.Mappings;
-using mono_app.API.Repositories;
+using mono_app.API.Project.MVC.Mappings;
+using mono_app.API.Project.MVC.Project.Service.Repositories;
+using mono_app.API.Project.Service.Data;
+using mono_app.API.Project.Service.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 

@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
-using mono_app.API.Models.Domain;
-using mono_app.API.Models.DTO;
+using mono_app.API.Project.MVC.Models.Domain;
+using mono_app.API.Project.MVC.Models.DTO;
 
-namespace mono_app.API.Mappings
+namespace mono_app.API.Project.MVC.Mappings
 {
     public class AutoMapperProfiles : Profile
     {

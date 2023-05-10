@@ -1,6 +1,6 @@
-﻿namespace mono_app.API.Models.DTO
+﻿namespace mono_app.API.Project.MVC.Models.Domain
 {
-    public class VehicleMakeDTO
+    public class VehicleMake
     {
         public Guid Id { get; set; }
         public string Name { get; set; }

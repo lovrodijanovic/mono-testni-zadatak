@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using mono_app.API.Data;
-using mono_app.API.Models.Domain;
+using mono_app.API.Project.MVC.Models.Domain;
+using mono_app.API.Project.Service.Data;
 
-namespace mono_app.API.Repositories
+namespace mono_app.API.Project.Service.Repositories
 {
     public class VehicleModelRepository : IVehicleModelRepository
     {
@@ -14,7 +14,7 @@ namespace mono_app.API.Repositories
 
         public async Task<VehicleModel> AddAsync(VehicleModel vehicleModel)
         {
-            vehicleModel.Id= Guid.NewGuid();
+            vehicleModel.Id = Guid.NewGuid();
             await carsDbContext.AddAsync(vehicleModel);
             await carsDbContext.SaveChangesAsync();
             return vehicleModel;
@@ -23,7 +23,7 @@ namespace mono_app.API.Repositories
         public async Task<VehicleModel> DeleteAsync(Guid id)
         {
             var vehicleModel = await carsDbContext.VehicleModels.FirstOrDefaultAsync(x => x.Id == id);
-            if(vehicleModel == null)
+            if (vehicleModel == null)
             {
                 return null;
             }
@@ -33,7 +33,7 @@ namespace mono_app.API.Repositories
             return vehicleModel;
         }
 
-        public async Task<IEnumerable<VehicleModel>> GetAllAsync(string? filterOn = null, string? filterQuery = null, string? sortBy = null,  bool isAscending = true, int pageNumber = 1, int pageSize = 1000)
+        public async Task<IEnumerable<VehicleModel>> GetAllAsync(string? filterOn = null, string? filterQuery = null, string? sortBy = null, bool isAscending = true, int pageNumber = 1, int pageSize = 1000)
         {
             var vehicleModels = carsDbContext.VehicleModels.Include("VehicleMake").AsQueryable();
 
@@ -79,7 +79,7 @@ namespace mono_app.API.Repositories
         {
             var existingVehicleModel = await carsDbContext.VehicleModels.FirstOrDefaultAsync(x => x.Id == id);
 
-            if(existingVehicleModel == null)
+            if (existingVehicleModel == null)
             {
                 return null;
             }

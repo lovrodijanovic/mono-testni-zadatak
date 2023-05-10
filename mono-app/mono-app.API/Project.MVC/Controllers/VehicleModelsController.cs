@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using mono_app.API.Models.Domain;
-using mono_app.API.Models.DTO;
-using mono_app.API.Repositories;
+using mono_app.API.Project.MVC.Models.Domain;
+using mono_app.API.Project.MVC.Models.DTO;
+using mono_app.API.Project.Service.Repositories;
 
-namespace mono_app.API.Controllers
+namespace mono_app.API.Project.MVC.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -35,7 +35,7 @@ namespace mono_app.API.Controllers
         {
             var vehicleModel = await vehicleModelRepository.GetAsync(id);
 
-            if(vehicleModel == null)
+            if (vehicleModel == null)
             {
                 return NotFound();
             }
@@ -59,7 +59,7 @@ namespace mono_app.API.Controllers
         {
             var vehicleModel = await vehicleModelRepository.DeleteAsync(id);
 
-            if(vehicleModel == null)
+            if (vehicleModel == null)
             {
                 return NotFound();
             }
@@ -75,7 +75,7 @@ namespace mono_app.API.Controllers
 
             vehicleModel = await vehicleModelRepository.UpdateAsync(id, vehicleModel);
 
-            if(vehicleModel == null)
+            if (vehicleModel == null)
             {
                 return NotFound();
             }

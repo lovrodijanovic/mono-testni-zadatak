@@ -1,4 +1,4 @@
-﻿namespace mono_app.API.Models.DTO
+﻿namespace mono_app.API.Project.MVC.Models.DTO
 {
     public class UpdateVehicleMakeRequestDTO
     {

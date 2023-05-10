@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using mono_app.API.Models.Domain;
-using mono_app.API.Models.DTO;
-using mono_app.API.Repositories;
+using mono_app.API.Project.MVC.Models.Domain;
+using mono_app.API.Project.MVC.Models.DTO;
+using mono_app.API.Project.Service.Repositories;
 
-namespace mono_app.API.Controllers
+namespace mono_app.API.Project.MVC.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -21,7 +21,7 @@ namespace mono_app.API.Controllers
 
 
         [HttpGet]
-        public async Task<IActionResult> GetAll([FromQuery] string? filterOn,[FromQuery] string? filterQuery,
+        public async Task<IActionResult> GetAll([FromQuery] string? filterOn, [FromQuery] string? filterQuery,
             [FromQuery] string? sortBy, [FromQuery] bool? isAscending,
             [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 1000)
         {
@@ -35,7 +35,7 @@ namespace mono_app.API.Controllers
         {
             var vehicleMake = await vehicleMakeRepository.GetAsync(id);
 
-            if(vehicleMake == null)
+            if (vehicleMake == null)
             {
                 return NotFound();
             }
@@ -60,7 +60,7 @@ namespace mono_app.API.Controllers
         public async Task<IActionResult> Delete([FromRoute] Guid id)
         {
             var vehicleMake = await vehicleMakeRepository.DeleteAsync(id);
-            if(vehicleMake == null)
+            if (vehicleMake == null)
             {
                 return NotFound();
             }
@@ -70,13 +70,13 @@ namespace mono_app.API.Controllers
 
         [HttpPut]
         [Route("{id:guid}")]
-        public async Task<IActionResult> Update([FromRoute]Guid id, [FromBody] UpdateVehicleMakeRequestDTO updateVehicleMakeRequestDTO)
+        public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] UpdateVehicleMakeRequestDTO updateVehicleMakeRequestDTO)
         {
             var vehicleMake = mapper.Map<VehicleMake>(updateVehicleMakeRequestDTO);
 
             vehicleMake = await vehicleMakeRepository.UpdateAsync(id, vehicleMake);
 
-            if(vehicleMake == null)
+            if (vehicleMake == null)
             {
                 return NotFound();
             }

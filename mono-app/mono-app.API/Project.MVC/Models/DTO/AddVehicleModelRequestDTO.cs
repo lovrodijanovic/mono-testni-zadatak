@@ -1,6 +1,6 @@
-﻿namespace mono_app.API.Models.DTO
+﻿namespace mono_app.API.Project.MVC.Models.DTO
 {
-    public class UpdateVehicleModelRequestDTO
+    public class AddVehicleModelRequestDTO
     {
         public string Name { get; set; }
         public string Abrv { get; set; }

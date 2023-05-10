@@ -1,8 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using mono_app.API.Data;
-using mono_app.API.Models.Domain;
+using mono_app.API.Project.MVC.Models.Domain;
+using mono_app.API.Project.Service.Data;
+using mono_app.API.Project.Service.Repositories;
 
-namespace mono_app.API.Repositories
+namespace mono_app.API.Project.MVC.Project.Service.Repositories
 {
     public class VehicleMakeRepository : IVehicleMakeRepository
     {
@@ -20,9 +21,9 @@ namespace mono_app.API.Repositories
 
 
             // Filtering
-            if(string.IsNullOrWhiteSpace(filterOn) == false && string.IsNullOrWhiteSpace(filterQuery) == false)
+            if (string.IsNullOrWhiteSpace(filterOn) == false && string.IsNullOrWhiteSpace(filterQuery) == false)
             {
-                if(filterOn.Equals("Name", StringComparison.OrdinalIgnoreCase))
+                if (filterOn.Equals("Name", StringComparison.OrdinalIgnoreCase))
                 {
                     vehicleMakes = vehicleMakes.Where(x => x.Name.Contains(filterQuery));
                 }
@@ -34,13 +35,13 @@ namespace mono_app.API.Repositories
 
 
             // Sorting
-            if(string.IsNullOrWhiteSpace(sortBy) == false)
+            if (string.IsNullOrWhiteSpace(sortBy) == false)
             {
-                if(sortBy.Equals("Name", StringComparison.OrdinalIgnoreCase))
+                if (sortBy.Equals("Name", StringComparison.OrdinalIgnoreCase))
                 {
                     vehicleMakes = isAscending ? vehicleMakes.OrderBy(x => x.Name) : vehicleMakes.OrderByDescending(x => x.Name);
                 }
-                else if(sortBy.Equals("Abrv", StringComparison.OrdinalIgnoreCase))
+                else if (sortBy.Equals("Abrv", StringComparison.OrdinalIgnoreCase))
                 {
                     vehicleMakes = isAscending ? vehicleMakes.OrderBy(x => x.Abrv) : vehicleMakes.OrderByDescending(x => x.Abrv);
                 }
@@ -68,7 +69,7 @@ namespace mono_app.API.Repositories
         public async Task<VehicleMake> DeleteAsync(Guid id)
         {
             var vehicleMake = await carsDbContext.VehicleMakes.FirstOrDefaultAsync(x => x.Id == id);
-            if(vehicleMake == null)
+            if (vehicleMake == null)
             {
                 return null;
             }
@@ -82,7 +83,7 @@ namespace mono_app.API.Repositories
         {
             var existingVehicleMake = await carsDbContext.VehicleMakes.FirstOrDefaultAsync(x => x.Id == id);
 
-            if(existingVehicleMake == null)
+            if (existingVehicleMake == null)
             {
                 return null;
             }
