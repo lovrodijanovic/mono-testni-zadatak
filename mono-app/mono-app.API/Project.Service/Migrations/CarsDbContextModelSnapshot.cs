@@ -4,13 +4,13 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using mono_app.API.Project.Service.Data;
+using mono_app.API.Project.Service.Contexts;
 
 #nullable disable
 
 namespace mono_app.API.Migrations
 {
-    [DbContext(typeof(CarsDbContext))]
+    [DbContext(typeof(VehicleContext))]
     partial class CarsDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
@@ -38,7 +38,7 @@ namespace mono_app.API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("VehicleMakes");
+                    b.ToTable("VehicleMakes", (string)null);
                 });
 
             modelBuilder.Entity("mono_app.API.Models.Domain.VehicleModel", b =>
@@ -62,7 +62,7 @@ namespace mono_app.API.Migrations
 
                     b.HasIndex("VehicleMakeId");
 
-                    b.ToTable("VehicleModels");
+                    b.ToTable("VehicleModels", (string)null);
                 });
 
             modelBuilder.Entity("mono_app.API.Models.Domain.VehicleModel", b =>

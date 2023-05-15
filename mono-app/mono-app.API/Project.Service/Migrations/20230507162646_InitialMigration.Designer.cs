@@ -5,13 +5,13 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using mono_app.API.Project.Service.Data;
+using mono_app.API.Project.Service.Contexts;
 
 #nullable disable
 
 namespace mono_app.API.Migrations
 {
-    [DbContext(typeof(CarsDbContext))]
+    [DbContext(typeof(VehicleContext))]
     [Migration("20230507162646_InitialMigration")]
     partial class InitialMigration
     {

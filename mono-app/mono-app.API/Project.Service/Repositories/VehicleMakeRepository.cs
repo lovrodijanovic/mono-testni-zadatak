@@ -1,23 +1,24 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using mono_app.API.Project.MVC.Models.Domain;
-using mono_app.API.Project.Service.Data;
+using mono_app.API.Project.Service.Contexts;
 using mono_app.API.Project.Service.Repositories;
 
 namespace mono_app.API.Project.MVC.Project.Service.Repositories
 {
     public class VehicleMakeRepository : IVehicleMakeRepository
     {
-        private readonly CarsDbContext carsDbContext;
-        public VehicleMakeRepository(CarsDbContext carsDbContext)
+        private IVehicleContext vehicleContext;
+        public VehicleMakeRepository(IVehicleContext context)
         {
-            this.carsDbContext = carsDbContext;
+            vehicleContext = context;
         }
 
         public async Task<IEnumerable<VehicleMake>> GetAllAsync(string? filterOn = null, string? filterQuery = null,
             string? sortBy = null, bool isAscending = true,
             int pageNumber = 1, int pageSize = 1000)
         {
-            var vehicleMakes = carsDbContext.VehicleMakes.AsQueryable();
+            var vehicleMakes = vehicleContext.VehicleMakes.AsQueryable();
 
 
             // Filtering
@@ -55,33 +56,33 @@ namespace mono_app.API.Project.MVC.Project.Service.Repositories
 
         public async Task<VehicleMake> GetAsync(Guid id)
         {
-            return await carsDbContext.VehicleMakes.FirstOrDefaultAsync(x => x.Id == id);
+            return await vehicleContext.VehicleMakes.FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public async Task<VehicleMake> AddAsync(VehicleMake vehicleMake)
         {
             vehicleMake.Id = Guid.NewGuid();
-            await carsDbContext.AddAsync(vehicleMake);
-            await carsDbContext.SaveChangesAsync();
+            vehicleContext.VehicleMakes.Add(vehicleMake);
+            await vehicleContext.SaveChangesAsync();
             return vehicleMake;
         }
 
         public async Task<VehicleMake> DeleteAsync(Guid id)
         {
-            var vehicleMake = await carsDbContext.VehicleMakes.FirstOrDefaultAsync(x => x.Id == id);
+            var vehicleMake = await vehicleContext.VehicleMakes.FirstOrDefaultAsync(x => x.Id == id);
             if (vehicleMake == null)
             {
                 return null;
             }
 
-            carsDbContext.VehicleMakes.Remove(vehicleMake);
-            await carsDbContext.SaveChangesAsync();
+            vehicleContext.VehicleMakes.Remove(vehicleMake);
+            await vehicleContext.SaveChangesAsync();
             return vehicleMake;
         }
 
         public async Task<VehicleMake> UpdateAsync(Guid id, VehicleMake vehicleMake)
         {
-            var existingVehicleMake = await carsDbContext.VehicleMakes.FirstOrDefaultAsync(x => x.Id == id);
+            var existingVehicleMake = await vehicleContext.VehicleMakes.FirstOrDefaultAsync(x => x.Id == id);
 
             if (existingVehicleMake == null)
             {
@@ -91,7 +92,7 @@ namespace mono_app.API.Project.MVC.Project.Service.Repositories
             existingVehicleMake.Name = vehicleMake.Name;
             existingVehicleMake.Abrv = vehicleMake.Abrv;
 
-            await carsDbContext.SaveChangesAsync();
+            await vehicleContext.SaveChangesAsync();
 
             return existingVehicleMake;
         }

@@ -1,41 +1,41 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using mono_app.API.Project.MVC.Models.Domain;
-using mono_app.API.Project.Service.Data;
+using mono_app.API.Project.Service.Contexts;
 
 namespace mono_app.API.Project.Service.Repositories
 {
     public class VehicleModelRepository : IVehicleModelRepository
     {
-        private readonly CarsDbContext carsDbContext;
-        public VehicleModelRepository(CarsDbContext carsDbContext)
+        private IVehicleContext vehicleContext;
+        public VehicleModelRepository(IVehicleContext vehicleContext)
         {
-            this.carsDbContext = carsDbContext;
+            this.vehicleContext = vehicleContext;
         }
 
         public async Task<VehicleModel> AddAsync(VehicleModel vehicleModel)
         {
             vehicleModel.Id = Guid.NewGuid();
-            await carsDbContext.AddAsync(vehicleModel);
-            await carsDbContext.SaveChangesAsync();
+            vehicleContext.VehicleModels.Add(vehicleModel);
+            await vehicleContext.SaveChangesAsync();
             return vehicleModel;
         }
 
         public async Task<VehicleModel> DeleteAsync(Guid id)
         {
-            var vehicleModel = await carsDbContext.VehicleModels.FirstOrDefaultAsync(x => x.Id == id);
+            var vehicleModel = await vehicleContext.VehicleModels.FirstOrDefaultAsync(x => x.Id == id);
             if (vehicleModel == null)
             {
                 return null;
             }
 
-            carsDbContext.VehicleModels.Remove(vehicleModel);
-            await carsDbContext.SaveChangesAsync();
+            vehicleContext.VehicleModels.Remove(vehicleModel);
+            await vehicleContext.SaveChangesAsync();
             return vehicleModel;
         }
 
         public async Task<IEnumerable<VehicleModel>> GetAllAsync(string? filterOn = null, string? filterQuery = null, string? sortBy = null, bool isAscending = true, int pageNumber = 1, int pageSize = 1000)
         {
-            var vehicleModels = carsDbContext.VehicleModels.Include("VehicleMake").AsQueryable();
+            var vehicleModels = vehicleContext.VehicleModels.Include("VehicleMake").AsQueryable();
 
 
             // Filtering
@@ -72,12 +72,12 @@ namespace mono_app.API.Project.Service.Repositories
 
         public async Task<VehicleModel> GetAsync(Guid id)
         {
-            return await carsDbContext.VehicleModels.FirstOrDefaultAsync(x => x.Id == id);
+            return await vehicleContext.VehicleModels.FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public async Task<VehicleModel> UpdateAsync(Guid id, VehicleModel vehicleModel)
         {
-            var existingVehicleModel = await carsDbContext.VehicleModels.FirstOrDefaultAsync(x => x.Id == id);
+            var existingVehicleModel = await vehicleContext.VehicleModels.FirstOrDefaultAsync(x => x.Id == id);
 
             if (existingVehicleModel == null)
             {
@@ -87,7 +87,7 @@ namespace mono_app.API.Project.Service.Repositories
             existingVehicleModel.Name = vehicleModel.Name;
             existingVehicleModel.Abrv = vehicleModel.Abrv;
 
-            await carsDbContext.SaveChangesAsync();
+            await vehicleContext.SaveChangesAsync();
 
             return existingVehicleModel;
         }

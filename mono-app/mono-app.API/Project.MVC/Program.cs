@@ -1,11 +1,17 @@
-using Microsoft.EntityFrameworkCore;
+using Autofac.Extensions.DependencyInjection;
+using Autofac;
 using mono_app.API.Project.MVC.Mappings;
-using mono_app.API.Project.MVC.Project.Service.Repositories;
-using mono_app.API.Project.Service.Data;
-using mono_app.API.Project.Service.Repositories;
+using mono_app.API.Project.Service;
 
-var builder = WebApplication.CreateBuilder(args);
 
+var builder = WebApplication.CreateBuilder();
+
+builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory())
+    .ConfigureContainer<ContainerBuilder>(builder =>
+    {
+        builder.RegisterModule(new DIModule());
+        builder.RegisterModule(new AutoMapperModule());
+    });
 // Add services to the container.
 
 builder.Services.AddControllers();
@@ -13,12 +19,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddDbContext<CarsDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("CarsConnectionString")));
-
-builder.Services.AddScoped<IVehicleMakeRepository, VehicleMakeRepository>();
-builder.Services.AddScoped<IVehicleModelRepository, VehicleModelRepository>();
-
-builder.Services.AddAutoMapper(typeof(AutoMapperProfiles));
+builder.Services.AddAutoMapper(typeof(AutoMapperModule));
 
 var app = builder.Build();
 
