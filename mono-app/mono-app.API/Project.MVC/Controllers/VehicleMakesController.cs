@@ -46,13 +46,17 @@ namespace mono_app.API.Project.MVC.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] AddVehicleMakeRequestDTO addVehicleMakeRequestDTO)
         {
-            var vehicleMake = mapper.Map<VehicleMake>(addVehicleMakeRequestDTO);
+            if (ModelState.IsValid)
+            {
+                var vehicleMake = mapper.Map<VehicleMake>(addVehicleMakeRequestDTO);
 
-            vehicleMake = await vehicleMakeRepository.AddAsync(vehicleMake);
+                vehicleMake = await vehicleMakeRepository.AddAsync(vehicleMake);
 
-            var vehicleMakeDTO = mapper.Map<VehicleMakeDTO>(vehicleMake);
+                var vehicleMakeDTO = mapper.Map<VehicleMakeDTO>(vehicleMake);
 
-            return CreatedAtAction(nameof(GetById), new { id = vehicleMakeDTO.Id }, vehicleMakeDTO);
+                return CreatedAtAction(nameof(GetById), new { id = vehicleMakeDTO.Id }, vehicleMakeDTO);
+            }
+            else return BadRequest();
         }
 
         [HttpDelete]
@@ -72,16 +76,19 @@ namespace mono_app.API.Project.MVC.Controllers
         [Route("{id:guid}")]
         public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] UpdateVehicleMakeRequestDTO updateVehicleMakeRequestDTO)
         {
-            var vehicleMake = mapper.Map<VehicleMake>(updateVehicleMakeRequestDTO);
-
-            vehicleMake = await vehicleMakeRepository.UpdateAsync(id, vehicleMake);
-
-            if (vehicleMake == null)
+            if (ModelState.IsValid)
             {
-                return NotFound();
-            }
+                var vehicleMake = mapper.Map<VehicleMake>(updateVehicleMakeRequestDTO);
 
-            return Ok(mapper.Map<VehicleMakeDTO>(vehicleMake));
+                vehicleMake = await vehicleMakeRepository.UpdateAsync(id, vehicleMake);
+
+                if (vehicleMake == null)
+                {
+                    return NotFound();
+                }
+                return Ok(mapper.Map<VehicleMakeDTO>(vehicleMake));
+            }
+            else return BadRequest();
         }
     }
 }

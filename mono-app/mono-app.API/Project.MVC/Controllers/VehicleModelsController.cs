@@ -46,11 +46,15 @@ namespace mono_app.API.Project.MVC.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] AddVehicleModelRequestDTO addVehicleModelRequestDTO)
         {
-            var vehicleModel = mapper.Map<VehicleModel>(addVehicleModelRequestDTO);
+            if (ModelState.IsValid)
+            {
+                var vehicleModel = mapper.Map<VehicleModel>(addVehicleModelRequestDTO);
 
-            var vehicleModelDTO = await vehicleModelRepository.AddAsync(vehicleModel);
+                var vehicleModelDTO = await vehicleModelRepository.AddAsync(vehicleModel);
 
-            return CreatedAtAction(nameof(GetById), new { id = vehicleModelDTO.Id }, vehicleModelDTO);
+                return CreatedAtAction(nameof(GetById), new { id = vehicleModelDTO.Id }, vehicleModelDTO);
+            }
+            else return BadRequest();
         }
 
         [HttpDelete]
@@ -71,16 +75,21 @@ namespace mono_app.API.Project.MVC.Controllers
         [Route("{id:guid}")]
         public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] UpdateVehicleModelRequestDTO updateVehicleModelRequestDTO)
         {
-            var vehicleModel = mapper.Map<VehicleModel>(updateVehicleModelRequestDTO);
-
-            vehicleModel = await vehicleModelRepository.UpdateAsync(id, vehicleModel);
-
-            if (vehicleModel == null)
+            if (ModelState.IsValid)
             {
-                return NotFound();
-            }
 
-            return Ok(mapper.Map<VehicleModelDTO>(vehicleModel));
+                var vehicleModel = mapper.Map<VehicleModel>(updateVehicleModelRequestDTO);
+
+                vehicleModel = await vehicleModelRepository.UpdateAsync(id, vehicleModel);
+
+                if (vehicleModel == null)
+                {
+                    return NotFound();
+                }
+
+                return Ok(mapper.Map<VehicleModelDTO>(vehicleModel));
+            }
+            else return BadRequest();
         }
     }
 }
